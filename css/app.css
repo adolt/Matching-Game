@@ -90,21 +90,33 @@ h1 {
  */
 
 .score-panel {
+  position: relative;
   text-align: left;
   width: 345px;
   margin-bottom: 10px;
 }
 
-.score-panel .stars {
+.score-panel .timer {
+  margin-left: 8px;
+}
+
+.stars {
   margin: 0;
   padding: 0;
   display: inline-block;
   margin: 0 5px 0 0;
 }
 
-.score-panel .stars li {
+.stars li {
   list-style: none;
   display: inline-block;
+}
+
+.score-panel .start {
+  position: absolute;
+  right: 25px;
+  top: 0;
+  cursor: pointer;
 }
 
 .score-panel .restart {

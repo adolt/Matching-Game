@@ -2,9 +2,14 @@
  * Udacity fend project: Mathing Game
  */
 (function() {
-  // Create two variables, one for holding temporary opened cards, the other for saving total moves
+  // Create variables, openCards for holding temporary opened cards, move for saving total moves,
+  // time for saving time duration, starCount for saving final score, state for saving game state(false for pause/finish, true for start)
   var openCards = [],
-    move = 0;
+    move = 0,
+    time = 0,
+    starCount = 5,
+    state = false,
+    intervalId;
 
   /**
    * Get all cards
@@ -12,7 +17,7 @@
    * @returns {Array}
    */
   function getCardArray() {
-    return [].slice.call(document.getElementsByClassName('card'));
+    return Array.from(document.getElementsByClassName('card'));
   }
 
   /**
@@ -21,11 +26,9 @@
    * @returns {Array}
    */
   function getIconArray() {
-    return [].slice
-      .call(document.querySelectorAll('.card .fa'))
-      .map(function(e) {
-        return e.classList.value;
-      });
+    return Array.from(document.querySelectorAll('.card .fa')).map(
+      e => e.classList.value
+    );
   }
 
   /**
@@ -85,7 +88,7 @@
    */
   function matchOpenCards() {
     totalCount -= 2;
-    openCards.forEach(function(card) {
+    openCards.forEach(card => {
       card.classList.add('match');
       card.classList.remove('open', 'show');
       card.removeEventListener('click', onCardClick);
@@ -98,11 +101,9 @@
    * 
    */
   function closeOpenCards() {
-    openCards.forEach(function(card) {
+    openCards.forEach(card => {
       card.classList.add('fail');
-      setTimeout(function() {
-        hideCard(card);
-      }, 500);
+      setTimeout(() => hideCard(card), 500);
     });
     openCards.length = 0;
   }
@@ -113,8 +114,35 @@
    */
   function checkIfFinish() {
     if (!totalCount) {
-      alert('You win in ' + move + ' moves!');
+      changeGameState();
+      clearInterval(intervalId);
+      congratulate();
     }
+  }
+
+  /**
+   * alert finish modal
+   * 
+   */
+  function congratulate() {
+    var el = document.getElementsByClassName('stars')[0].cloneNode(true);
+    swal({
+      title: 'Congratulations!',
+      text:
+        'You have won the game in ' +
+        time +
+        ' seconds, within ' +
+        move +
+        ' moves!',
+      content: el,
+      icon: 'success',
+      buttons: [true, 'Play Again']
+    }).then(accept => {
+      resetGame();
+      if (accept) {
+        changeGameState();
+      }
+    });
   }
 
   /**
@@ -123,9 +151,15 @@
    */
   function resetGame() {
     initGame();
-    openCards.length = 0;
     resetStars();
     updateMove(0);
+    openCards.length = 0;
+    time = 0;
+    updateTimer();
+    var stateBtn = document.getElementsByClassName('start')[0];
+    stateBtn.children[0].classList.value = 'fa fa-play';
+    state = false;
+    clearInterval(intervalId);
   }
 
   /**
@@ -146,12 +180,16 @@
   function updateStars() {
     var stars = document.getElementsByClassName('stars')[0];
     if (move === 16) {
+      starCount = 4;
       stars.children[4].children[0].classList.remove('shine');
     } else if (move === 26) {
+      starCount = 3;
       stars.children[3].children[0].classList.remove('shine');
     } else if (move === 36) {
+      starCount = 2;
       stars.children[2].children[0].classList.remove('shine');
     } else if (move === 46) {
+      starCount = 1;
       stars.children[1].children[0].classList.remove('shine');
     }
   }
@@ -162,9 +200,36 @@
    */
   function resetStars() {
     var stars = document.getElementsByClassName('stars')[0].children;
-    [].forEach.call(stars, function(star) {
+    Array.from(stars).forEach(star => {
       star.children[0].classList.value = 'fa fa-star shine';
     });
+  }
+
+  /**
+   * update timer
+   * 
+   */
+  function updateTimer() {
+    document.getElementsByClassName('timer')[0].innerText = time;
+  }
+
+  /**
+   * change game state: start, pause/finish
+   * 
+   */
+  function changeGameState() {
+    state = !state;
+    if (state) {
+      intervalId = setInterval(function() {
+        time++;
+        updateTimer();
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+    var stateBtn = document.getElementsByClassName('start')[0];
+    stateBtn.children[0].classList.toggle('fa-play');
+    stateBtn.children[0].classList.toggle('fa-pause');
   }
 
   /*
@@ -196,6 +261,9 @@
    * @param {Object} event
    */
   function onCardClick(event) {
+    if (!state) {
+      changeGameState();
+    }
     if (isCardOpen(this)) {
       return;
     }
@@ -218,13 +286,15 @@
     var cards = getCardArray();
     var icons = shuffle(getIconArray());
     totalCount = cards.length;
-    cards.forEach(function(card, index) {
+    cards.forEach((card, index) => {
       card.setAttribute('class', 'card');
       card.children[0].setAttribute('class', icons[index]);
       card.addEventListener('click', onCardClick);
     });
     var resetBtn = document.getElementsByClassName('restart')[0];
     resetBtn.addEventListener('click', resetGame);
+    var stateBtn = document.getElementsByClassName('start')[0];
+    stateBtn.addEventListener('click', changeGameState);
   }
 
   initGame();
