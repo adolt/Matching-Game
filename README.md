@@ -1,20 +1,53 @@
-# Memory Game Project
+# 记忆游戏
 
-## Table of Contents
+## 介绍
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+这是 Udacity 前端纳米学位进阶课程中的项目一：记忆游戏。
 
-## Instructions
+## 游戏规则
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+- 玩家通过点击来翻转卡片
+  - 若两张翻转的卡片图案相同则保持打开状态
+  - 否则重新盖住
+- 玩家需要记忆卡片图形，直至所有卡片打开，方能赢得游戏胜利
+- 玩家在赢得游戏后，会根据过程中点击次数来进行等级评价
 
-To get started, open `js/app.js` and start building out the app's functionality
+## 功能实现
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+### 代码
+HTML5、CSS、JavaScript
 
-## Contributing
+### 依赖
+依赖的库或插件：
+- [Font-Awesome](https://github.com/FortAwesome/Font-Awesome/)
+  - 提供图标
+- [sweetalert](https://github.com/t4t5/sweetalert)
+  - 提供美观的弹窗效果
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+### 兼容性
+IE8+ 可完美运行
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+## 如何游戏
+
+### 线上地址
+[Matching-Game](https://notbored.cc/udacity/matching-game/)
+
+### 使用 Git
+1. 克隆项目
+```bash
+git clone https://github.com/adolt/Arcade-Game.git
+```
+2. 打开项目文件夹，用浏览器打开 `index.html`
+
+### 下载压缩包
+1. 点击项目右上方的 __Clone or download__ 按钮
+2. 点击 __Download ZIP__
+3. 打开项目文件夹，用浏览器打开 `index.html`
+
+## 联系我
+Email: [me@notbored.cc](mailto:me@notbored.cc)
+
+Twitter: [@zhangshme](https://twitter.com/zhangshme)
+
+## License
+[MIT](https://github.com/babel/babel/blob/master/LICENSE)
