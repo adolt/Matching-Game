@@ -35,7 +35,7 @@ IE8+ 可完美运行
 ### 使用 Git
 1. 克隆项目
 ```bash
-git clone https://github.com/adolt/Arcade-Game.git
+git clone https://github.com/adolt/Matching-Game.git
 ```
 2. 打开项目文件夹，用浏览器打开 `index.html`
 
